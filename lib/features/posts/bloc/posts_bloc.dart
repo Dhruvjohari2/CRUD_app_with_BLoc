@@ -12,19 +12,18 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     on<PostsInitialFetchEvent>(postsInitialFetchEvent);
     on<PostDetailsEvent>(postsDetailsFetchEvent);
     on<PostAddEvent>(postAddEvent);
+    on<PostUpdateEvent>(postUpdateEvent);
     on<PostDeleteEvent>(postDeleteEvent);
   }
 
-  FutureOr<void> postsInitialFetchEvent(
-      PostsInitialFetchEvent event, Emitter<PostsState> emit) async {
+  FutureOr<void> postsInitialFetchEvent(PostsInitialFetchEvent event, Emitter<PostsState> emit) async {
     emit(PostsFetchingLoadingState());
 
     List<PostDataUiModel> posts = await PostsRepo.fetchPosts();
     emit(PostFetchingSuccessfulState(posts: posts));
   }
 
-  FutureOr<void> postsDetailsFetchEvent(
-      PostDetailsEvent event, Emitter<PostsState> emit) async {
+  FutureOr<void> postsDetailsFetchEvent(PostDetailsEvent event, Emitter<PostsState> emit) async {
     emit(PostsFetchingLoadingDetailsState());
 
     List<PostDataDetailsUiModel> postsDetails =
@@ -32,8 +31,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     emit(PostFetchingSuccessfulDetailsState(postsDetails: postsDetails));
   }
 
-  FutureOr<void> postDeleteEvent(
-      PostDeleteEvent event, Emitter<PostsState> emit) async {
+  FutureOr<void> postDeleteEvent(PostDeleteEvent event, Emitter<PostsState> emit) async {
     bool success = await PostsRepo.deletePosts(event.id);
     print(success);
     if (success) {
@@ -43,14 +41,23 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     }
   }
 
-  FutureOr<void> postAddEvent(
-      PostAddEvent event, Emitter<PostsState> emit) async {
+  FutureOr<void> postAddEvent(PostAddEvent event, Emitter<PostsState> emit) async {
     bool success = await PostsRepo.addPosts(event.title, event.userid, event.body);
     print(success);
     if (success) {
       emit(PostsAdditionSuccessState());
     } else {
       emit(PostsAdditionErrorState());
+    }
+  }
+
+  FutureOr<void> postUpdateEvent(PostUpdateEvent event, Emitter<PostsState> emit) async  {
+    bool success = await PostsRepo.updatePosts(event.title, event.userid, event.body, event.id);
+    print(success);
+    if (success) {
+      emit(PostsUpdateSuccessState());
+    } else {
+      emit(PostsUpdateErrorState());
     }
   }
 }

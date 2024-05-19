@@ -45,9 +45,16 @@ class PostsFetchingErrorDetailsState extends PostsState {}
 //Delete Event
 
 
-class PostsDeleteIdState extends PostsActionState {}
+class PostsDeleteIdState extends PostsState {}
 
-class PostsDeleteErrorState extends PostsActionState {}
+class PostsDeleteErrorState extends PostsState {}
 
-// Add Objects
+// update Objects
+
+class PostsUpdateLoadingState extends PostsState {}
+
+class PostsUpdateSuccessState extends PostsState {}
+
+class PostsUpdateErrorState extends PostsState {}
+
 

@@ -23,11 +23,11 @@ class _AddObjectState extends State<AddObject> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body:
-      BlocConsumer<PostsBloc, PostsState>(
+      body: BlocConsumer<PostsBloc, PostsState>(
         listener: (context, state) {
           if (state is PostsAdditionSuccessState) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Post added successfully!')));
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Post added successfully!')));
           }
         },
         builder: (context, state) {

@@ -1,4 +1,4 @@
-
+import 'package:crud_bloc/features/posts/ui/add.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,10 +31,9 @@ class _PostPageState extends State<PostPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('PostPage')),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: (){
+        child: const Icon(Icons.add),
+        onPressed: () {
           _showMyDialog();
-          // postsBloc.add(PostAddEvent());
         },
       ),
       body: BlocConsumer<PostsBloc, PostsState>(
@@ -52,19 +51,41 @@ class _PostPageState extends State<PostPage> {
               return ListView.builder(
                   itemCount: successState.posts.length,
                   itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => DetailPage(id: successState.posts[index].id)));
-                      },
-                      child: Container(
-                          color: Colors.grey[400],
-                          padding: const EdgeInsets.all(16),
-                          margin: const EdgeInsets.all(16),
-                          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                            Text('Id: ${successState.posts[index].id}'),
-                            Text('Title: ${successState.posts[index].title}'),
-                            Text('Body: ${successState.posts[index].body}'),
-                          ])),
+                    return Column(
+                      children: [
+                        Container(
+                            color: Colors.grey[400],
+                            padding: const EdgeInsets.all(16),
+                            margin: const EdgeInsets.all(16),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Id: ${successState.posts[index].id}'),
+                                  Text(
+                                      'Title: ${successState.posts[index].title}'),
+                                  Text(
+                                      'Body: ${successState.posts[index].body}'),
+                                ])),
+                        Row(
+                          children: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => DetailPage(
+                                              id: successState
+                                                  .posts[index].id)));
+                                },
+                                child: const Text('Next Page')),
+                            const SizedBox(width: 20),
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (_) => const AddObject()));
+                                }, child: Text('Edit '))
+                          ],
+                        )
+                      ],
                     );
                   });
             case PostsFetchingErrorState:
@@ -76,6 +97,7 @@ class _PostPageState extends State<PostPage> {
       ),
     );
   }
+
   Future<void> _showMyDialog() async {
     return showDialog<void>(
       context: context,
@@ -88,7 +110,8 @@ class _PostPageState extends State<PostPage> {
               children: <Widget>[
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 1)),
                   child: TextFormField(
                     keyboardType: TextInputType.name,
                     initialValue: title,
@@ -102,7 +125,8 @@ class _PostPageState extends State<PostPage> {
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 1)),
                   child: TextFormField(
                     keyboardType: TextInputType.name,
                     initialValue: body,
@@ -116,7 +140,8 @@ class _PostPageState extends State<PostPage> {
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 1)),
                   child: TextFormField(
                     keyboardType: TextInputType.number,
                     initialValue: userID,
@@ -135,7 +160,8 @@ class _PostPageState extends State<PostPage> {
             TextButton(
               child: const Text('Approve'),
               onPressed: () {
-                postsBloc.add(PostAddEvent(body: body,title: title,userid: int.parse(userID)));
+                postsBloc.add(PostAddEvent(
+                    body: body, title: title, userid: int.parse(userID)));
                 Navigator.pop(context);
               },
             ),

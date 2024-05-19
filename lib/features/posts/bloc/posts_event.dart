@@ -24,3 +24,16 @@ class PostDeleteEvent extends PostsEvent {
 
   PostDeleteEvent({required this.id});
 }
+
+class PostUpdateEvent extends PostsEvent {
+  final int id;
+  final String title;
+  final int userid;
+  final String body;
+
+  PostUpdateEvent(
+      {required this.id,
+      required this.title,
+      required this.userid,
+      required this.body});
+}
